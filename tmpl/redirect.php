@@ -11,11 +11,11 @@ defined('_JEXEC') or die;
 ?>
 <div class="row-fluid">
     <div class="span12">
-        <h2><?php echo JText::_("COM_CROWDFUNDING_LOGIN_TITLE");?></h2>
+        <h2><?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_TITLE");?></h2>
 
         <p class="alert">
             <i class="icon-info-sign"></i>
-            <?php echo JText::_("COM_CROWDFUNDING_LOGIN_YOU_ARE_SIGNED_NOT_REDIRECTED");?>
+            <?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_YOU_ARE_SIGNED_NOT_REDIRECTED");?>
         </p>
         <form action="<?php echo JRoute::_("index.php?option=com_crowdfunding&task=backing.process"); ?>" method="post">
             <input type="hidden" name="id" value="<?php echo (int)$item->id; ?>" />
@@ -25,7 +25,7 @@ defined('_JEXEC') or die;
             <?php echo JHtml::_('form.token'); ?>
 
             <button type="submit" class="btn btn-primary">
-                <?php echo JText::_("COM_CROWDFUNDING_LOGIN_NEXT_STEP");?>
+                <?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_NEXT_STEP");?>
             </button>
         </form>
     </div>

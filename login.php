@@ -1,6 +1,6 @@
 <?php
 /**
- * @package      CrowdFunding
+ * @package      CrowdFundingPayment
  * @subpackage   Plugins
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2014 Todor Iliev <todor@itprism.com>. All rights reserved.
@@ -11,12 +11,12 @@
 defined('_JEXEC') or die;
 
 /**
- * CrowdFunding Login Plug-in displays a login form on step 2 of the payment wizard.
+ * CrowdFundingPayment - Login Plug-in displays a login form on step 2 of the payment wizard.
  *
- * @package      CrowdFunding
+ * @package      CrowdFundingPayment
  * @subpackage   Plugins
  */
-class plgCrowdFundingLogin extends JPlugin
+class plgCrowdFundingPaymentLogin extends JPlugin
 {
     protected $autoloadLanguage = true;
 
@@ -43,7 +43,7 @@ class plgCrowdFundingLogin extends JPlugin
      */
     public function onPaymentDisplay($context, &$item, &$params)
     {
-        if (strcmp("com_crowdfunding.payment.step2", $context) != 0) {
+        if (strcmp("com_crowdfundingpayment.step2", $context) != 0) {
             return null;
         }
 
@@ -77,7 +77,7 @@ class plgCrowdFundingLogin extends JPlugin
             $this->returnUrl = CrowdFundingHelperRoute::getBackingRoute($item->slug, $item->catslug);
 
             // Get the path for the layout file
-            $path = JPluginHelper::getLayoutPath('crowdfunding', 'login');
+            $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login');
 
             // Render the login form.
             ob_start();
@@ -95,7 +95,7 @@ class plgCrowdFundingLogin extends JPlugin
             $this->amount   = $paymentProcess->amount;
 
             // Get the path for the layout file
-            $path = JPluginHelper::getLayoutPath('crowdfunding', 'login', 'redirect');
+            $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login', 'redirect');
 
             // Render the login form.
             ob_start();
@@ -136,7 +136,7 @@ jQuery(document).ready(function() {
      */
     public function onPaymentAuthorize($context, &$item, &$params, &$user)
     {
-        if (strcmp("com_crowdfunding.payment.authorize", $context) != 0) {
+        if (strcmp("com_crowdfundingpayment.authorize", $context) != 0) {
             return null;
         }
 

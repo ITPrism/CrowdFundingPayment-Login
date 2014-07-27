@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 ?>
 <div class="row-fluid">
     <div class="span12">
-        <h2><?php echo JText::_("COM_CROWDFUNDING_LOGIN_TITLE");?></h2>
+        <h2><?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_TITLE");?></h2>
 
         <form action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post" class="form-horizontal">
 
@@ -46,18 +46,18 @@ defined('_JEXEC') or die;
     <ul class="nav nav-tabs nav-stacked">
         <li>
             <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
-                <?php echo JText::_('COM_CROWDFUNDING_LOGIN_RESET'); ?></a>
+                <?php echo JText::_('PLG_CROWDFUNDINGPAYMENT_LOGIN_RESET'); ?></a>
         </li>
         <li>
             <a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">
-                <?php echo JText::_('COM_CROWDFUNDING_LOGIN_REMIND'); ?></a>
+                <?php echo JText::_('PLG_CROWDFUNDINGPAYMENT_LOGIN_REMIND'); ?></a>
         </li>
         <?php
         $usersConfig = JComponentHelper::getParams('com_users');
         if ($usersConfig->get('allowUserRegistration')) { ?>
             <li>
                 <a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>">
-                    <?php echo JText::_('COM_CROWDFUNDING_LOGIN_REGISTER'); ?></a>
+                    <?php echo JText::_('PLG_CROWDFUNDINGPAYMENT_LOGIN_REGISTER'); ?></a>
             </li>
         <?php } ?>
     </ul>

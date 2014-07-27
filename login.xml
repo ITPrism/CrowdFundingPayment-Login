@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.3" type="plugin" group="crowdfunding" method="upgrade">
-    <name>PLG_CROWDFUNDING_LOGIN</name>
+<extension version="3.3" type="plugin" group="crowdfundingpayment" method="upgrade">
+    <name>PLG_CROWDFUNDINGPAYMENT_LOGIN</name>
     <author>Todor Iliev</author>
     <copyright>Copyright (C) 2014 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
@@ -9,13 +9,13 @@
     <version>1.0</version>
     <creationDate>31 July, 2014</creationDate>
     <description><![CDATA[
-	<p>CrowdFunding Login is a plugin that displays a login form on step 2 of the payment wizard.</p>
+	<p>CrowdFundingPayment - Login is a plugin that displays a login form on step 2 of the payment wizard.</p>
     <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
 	<p><a href='http://itprism.com/' target='_blank'>Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
 	<p>Please, <a href='http://extensions.joomla.org/extensions/e-commerce/donations/23876' target='_blank'>vote for the extension</a> on Joomla! Extensions Directory</p>
 	]]></description>
     
-    <help url="PLG_CROWDFUNDING_LOGIN_HELP_URL"/>
+    <help url="PLG_CROWDFUNDINGPAYMENT_LOGIN_HELP_URL"/>
     
     <files>
         <filename plugin="login">login.php</filename>

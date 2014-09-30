@@ -43,7 +43,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
      */
     public function onPaymentDisplay($context, &$item, &$params)
     {
-        if (strcmp("com_crowdfundingpayment.step2", $context) != 0) {
+        if (strcmp("com_crowdfunding.payment.step2", $context) != 0) {
             return null;
         }
 
@@ -88,7 +88,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
             // Get the payment process object and
             // store the selected data from the user.
-            $paymentProcessContext    = CrowdFundingConstants::PAYMENT_PROCESS_CONTEXT . $item->id;
+            $paymentProcessContext    = CrowdFundingConstants::PAYMENT_SESSION_CONTEXT . $item->id;
             $paymentProcess           = $this->app->getUserState($paymentProcessContext);
 
             $this->rewardId = $paymentProcess->rewardId;
@@ -136,7 +136,7 @@ jQuery(document).ready(function() {
      */
     public function onPaymentAuthorize($context, &$item, &$params, &$user)
     {
-        if (strcmp("com_crowdfundingpayment.authorize", $context) != 0) {
+        if (strcmp("com_crowdfunding.payment.authorize", $context) != 0) {
             return null;
         }
 

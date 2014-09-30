@@ -7,7 +7,7 @@
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
     <version>1.0</version>
-    <creationDate>31 July, 2014</creationDate>
+    <creationDate>30 September, 2014</creationDate>
     <description><![CDATA[
 	<p>CrowdFundingPayment - Login is a plugin that displays a login form on step 2 of the payment wizard.</p>
     <p>Invest in the extension and help for its improvement. You can <a href="http://itprism.com/sponsorship" target="_blank">sponsor the extension via SMS, PayPal or Bitcoin</a>.</p>
@@ -22,6 +22,7 @@
         <filename>index.html</filename>
         
         <folder>language</folder>
+        <folder>tmpl</folder>
     </files>
     
     <config />

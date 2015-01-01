@@ -22,6 +22,10 @@ defined('_JEXEC') or die;
             <input type="hidden" name="rid" value="<?php echo (int)$this->rewardId; ?>" />
             <input type="hidden" name="amount" value="<?php echo (float)$this->amount; ?>" />
 
+            <?php if ($componentParams->get("backing_terms", 0) and !empty($this->terms)) { ?>
+            <input type="hidden" name="terms" value="1" />
+            <?php } ?>
+
             <?php echo JHtml::_('form.token'); ?>
 
             <button type="submit" class="btn btn-primary">

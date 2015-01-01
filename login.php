@@ -30,6 +30,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
     protected $rewardId;
     protected $amount;
+    protected $terms;
 
     /**
      * This method prepares a payment gateway - buttons, forms,...
@@ -41,7 +42,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
      *
      * @return null|string
      */
-    public function onPaymentDisplay($context, &$item, &$params)
+    public function onPaymentExtras($context, &$item, &$params)
     {
         if (strcmp("com_crowdfunding.payment.step2", $context) != 0) {
             return null;
@@ -86,13 +87,17 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
         } else { // Redirect to step "Payment".
 
+            $componentParams = JComponentHelper::getParams("com_crowdfunding");
+            /** @var  $componentParams Joomla\Registry\Registry */
+
             // Get the payment process object and
             // store the selected data from the user.
             $paymentProcessContext    = CrowdFundingConstants::PAYMENT_SESSION_CONTEXT . $item->id;
-            $paymentProcess           = $this->app->getUserState($paymentProcessContext);
+            $paymentSession           = $this->app->getUserState($paymentProcessContext);
 
-            $this->rewardId = $paymentProcess->rewardId;
-            $this->amount   = $paymentProcess->amount;
+            $this->rewardId = $paymentSession->rewardId;
+            $this->amount   = $paymentSession->amount;
+            $this->terms    = $paymentSession->terms;
 
             // Get the path for the layout file
             $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login', 'redirect');
@@ -104,18 +109,20 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
             // Include JavaScript code to redirect user to next step.
 
-            $filter    = JFilterInput::getInstance();
+            $processUrl    = JUri::base()."index.php?option=com_crowdfunding&task=backing.process&id=".(int)$item->id."&rid=".(int)$this->rewardId."&amount=".rawurldecode($this->amount)."&".JSession::getFormToken(). "=1";
 
-            $processUrl = $filter->clean(
-                JUri::base()."index.php?option=com_crowdfunding&task=backing.process&id=".(int)$item->id."&rid=".(int)$this->rewardId."&amount=".rawurldecode($this->amount)."&".JSession::getFormToken(). "=1"
-            );
+            // Set the value of terms of use condition.
+            if ($componentParams->get("backing_terms", 0) and !empty($this->terms)) {
+                $processUrl .= "&terms=1";
+            }
+
+            $filter = JFilterInput::getInstance();
+            $processUrl = $filter->clean($processUrl);
 
             $js = '
 jQuery(document).ready(function() {
      window.location.replace("'.$processUrl.'");
-});
-            ';
-
+});';
             $doc->addScriptDeclaration($js);
         }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package      CrowdFundingPayment
+ * @package      CrowdfundingPayment
  * @subpackage   Plugins
  * @author       Todor Iliev
  * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
@@ -11,12 +11,12 @@
 defined('_JEXEC') or die;
 
 /**
- * CrowdFundingPayment - Login Plug-in displays a login form on step 2 of the payment wizard.
+ * CrowdfundingPayment - Login Plug-in displays a login form on step 2 of the payment wizard.
  *
- * @package      CrowdFundingPayment
+ * @package      CrowdfundingPayment
  * @subpackage   Plugins
  */
-class plgCrowdFundingPaymentLogin extends JPlugin
+class plgCrowdfundingPaymentLogin extends JPlugin
 {
     protected $autoloadLanguage = true;
 
@@ -75,7 +75,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
             $this->loginForm = $form;
 
-            $this->returnUrl = CrowdFundingHelperRoute::getBackingRoute($item->slug, $item->catslug);
+            $this->returnUrl = CrowdfundingHelperRoute::getBackingRoute($item->slug, $item->catslug);
 
             // Get the path for the layout file
             $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login');
@@ -92,7 +92,7 @@ class plgCrowdFundingPaymentLogin extends JPlugin
 
             // Get the payment process object and
             // store the selected data from the user.
-            $paymentProcessContext    = CrowdFundingConstants::PAYMENT_SESSION_CONTEXT . $item->id;
+            $paymentProcessContext    = Crowdfunding\Constants::PAYMENT_SESSION_CONTEXT . $item->id;
             $paymentSession           = $this->app->getUserState($paymentProcessContext);
 
             $this->rewardId = $paymentSession->rewardId;

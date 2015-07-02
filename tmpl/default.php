@@ -9,41 +9,36 @@
 
 defined('_JEXEC') or die;
 ?>
-<div class="row-fluid">
-    <div class="span12">
-        <h2><?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_TITLE");?></h2>
-
-        <form action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post" class="form-horizontal">
-
-            <fieldset class="well">
-                <?php foreach ($this->loginForm->getFieldset('credentials') as $field) { ?>
-                    <?php if (!$field->hidden) { ?>
-                        <div class="control-group">
-                            <div class="control-label">
-                                <?php echo $field->label; ?>
-                            </div>
-                            <div class="controls">
-                                <?php echo $field->input; ?>
-                            </div>
-                        </div>
-                    <?php } ?>
-                <?php } ?>
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-primary">
-                            <?php echo JText::_('JLOGIN'); ?>
-                        </button>
+<div class="row">
+    <div class=col-md-12>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form action="<?php echo JRoute::_('index.php?option=com_users&task=user.login'); ?>" method="post" class="form-horizontal">
+                    <?php foreach ($this->loginForm->getFieldset('credentials') as $field) { ?>
+                        <?php if (!$field->hidden) { ?>
+                    <div class="form-group">
+                        <?php echo $field->label; ?>
+                        <?php echo $field->input; ?>
                     </div>
-                </div>
-                <input type="hidden" name="return" value="<?php echo base64_encode($this->returnUrl); ?>" />
-                <?php echo JHtml::_('form.token'); ?>
-            </fieldset>
-        </form>
+                        <?php } else { ?>
+                        <?php echo $field->input; ?>
+                        <?php } ?>
+                    <?php } ?>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary"><?php echo JText::_('JLOGIN'); ?></button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="return" value="<?php echo base64_encode($this->returnUrl); ?>" />
+                    <?php echo JHtml::_('form.token'); ?>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row-fluid">
-    <ul class="nav nav-tabs nav-stacked">
+<div class="row">
+    <ul class="nav nav-pills nav-stacked">
         <li>
             <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">
                 <?php echo JText::_('PLG_CROWDFUNDINGPAYMENT_LOGIN_RESET'); ?></a>

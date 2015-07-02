@@ -9,12 +9,10 @@
 
 defined('_JEXEC') or die;
 ?>
-<div class="row-fluid">
-    <div class="span12">
-        <h2><?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_TITLE");?></h2>
-
-        <p class="alert">
-            <i class="icon-info-sign"></i>
+<div class="row">
+    <div class="col-md-12">
+        <p class="bg-info p-5">
+            <span class="glyphicon glyphicon-info-sign"></span>
             <?php echo JText::_("PLG_CROWDFUNDINGPAYMENT_LOGIN_YOU_ARE_SIGNED_NOT_REDIRECTED");?>
         </p>
         <form action="<?php echo JRoute::_("index.php?option=com_crowdfunding&task=backing.process"); ?>" method="post">

@@ -1,6 +1,6 @@
 Crowdfunding Login
 ==========================
-( Version 2.0 )
+( Version 2.1 )
 - - -
 
 This is a plug-in for Crowdfunding platform, which displays a login form on step 2 of the payment wizard.

@@ -3,7 +3,7 @@
  * @package      CrowdfundingPayment
  * @subpackage   Plugins
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2015 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
 
@@ -37,14 +37,14 @@ class plgCrowdfundingPaymentLogin extends JPlugin
      * That gateway will be displayed on the summary page as a payment option.
      *
      * @param string    $context This string gives information about that where it has been executed the trigger.
-     * @param object    $item    A project data.
+     * @param stdClass  $item    A project data.
      * @param Joomla\Registry\Registry $params  The parameters of the component
      *
      * @return null|string
      */
-    public function onPaymentExtras($context, &$item, &$params)
+    public function onPaymentExtras($context, $item, $params)
     {
-        if (strcmp("com_crowdfunding.payment.step2", $context) != 0) {
+        if (strcmp('com_crowdfunding.payment.step2', $context) !== 0) {
             return null;
         }
 
@@ -57,16 +57,15 @@ class plgCrowdfundingPaymentLogin extends JPlugin
 
         // Check document type
         $docType = $doc->getType();
-        if (strcmp("html", $docType) != 0) {
+        if (strcmp('html', $docType) !== 0) {
             return null;
         }
 
         // Get user ID.
-        $userId  = JFactory::getUser()->get("id");
+        $userId  = JFactory::getUser()->get('id');
 
         // Display login form
         if (!$userId) {
-
             // Get the form.
             JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
             JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
@@ -87,7 +86,7 @@ class plgCrowdfundingPaymentLogin extends JPlugin
 
         } else { // Redirect to step "Payment".
 
-            $componentParams = JComponentHelper::getParams("com_crowdfunding");
+            $componentParams = JComponentHelper::getParams('com_crowdfunding');
             /** @var  $componentParams Joomla\Registry\Registry */
 
             // Get the payment process object and
@@ -109,11 +108,11 @@ class plgCrowdfundingPaymentLogin extends JPlugin
 
             // Include JavaScript code to redirect user to next step.
 
-            $processUrl    = JUri::base()."index.php?option=com_crowdfunding&task=backing.process&id=".(int)$item->id."&rid=".(int)$this->rewardId."&amount=".rawurldecode($this->amount)."&".JSession::getFormToken(). "=1";
+            $processUrl    = JUri::base().'index.php?option=com_crowdfunding&task=backing.process&id='.(int)$item->id.'&rid='.(int)$this->rewardId.'&amount='.rawurldecode($this->amount).'&'.JSession::getFormToken(). '=1';
 
             // Set the value of terms of use condition.
-            if ($componentParams->get("backing_terms", 0) and !empty($this->terms)) {
-                $processUrl .= "&terms=1";
+            if ($componentParams->get('backing_terms', 0) and !empty($this->terms)) {
+                $processUrl .= '&terms=1';
             }
 
             $filter = JFilterInput::getInstance();
@@ -135,15 +134,15 @@ jQuery(document).ready(function() {
      * If this method return true, the system will continue to step 2.
      *
      * @param string    $context This string gives information about that where it has been executed the trigger.
-     * @param object $item
+     * @param stdClass $item
      * @param Joomla\Registry\Registry $params
      * @param JUser $user
      *
      * @return bool
      */
-    public function onPaymentAuthorize($context, &$item, &$params, &$user)
+    public function onPaymentAuthorize($context, $item, $params, $user)
     {
-        if (strcmp("com_crowdfunding.payment.authorize", $context) != 0) {
+        if (strcmp('com_crowdfunding.payment.authorize', $context) !== 0) {
             return null;
         }
 
@@ -156,7 +155,7 @@ jQuery(document).ready(function() {
 
         // Check document type
         $docType = $doc->getType();
-        if (strcmp("html", $docType) != 0) {
+        if (strcmp('html', $docType) !== 0) {
             return null;
         }
 

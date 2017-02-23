@@ -3,9 +3,13 @@
  * @package      CrowdfundingPayment
  * @subpackage   Plugins
  * @author       Todor Iliev
- * @copyright    Copyright (C) 2016 Todor Iliev <todor@itprism.com>. All rights reserved.
+ * @copyright    Copyright (C) 2017 Todor Iliev <todor@itprism.com>. All rights reserved.
  * @license      GNU General Public License version 3 or later; see LICENSE.txt
  */
+
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 
 // no direct access
 defined('_JEXEC') or die;
@@ -38,13 +42,15 @@ class plgCrowdfundingPaymentLogin extends JPlugin
      *
      * @param string    $context This string gives information about that where it has been executed the trigger.
      * @param stdClass  $item    A project data.
+     * @param stdClass  $nextStepParams
      * @param Joomla\Registry\Registry $params  The parameters of the component
      *
+     * @throws EnvironmentIsBrokenException
      * @return null|string
      */
-    public function onPaymentExtras($context, $item, $params)
+    public function onPreparePaymentStep($context, $item, $nextStepParams, $params)
     {
-        if (strcmp('com_crowdfunding.payment.step2', $context) !== 0) {
+        if (strcmp('com_crowdfunding.payment.step.login', $context) !== 0) {
             return null;
         }
 
@@ -62,87 +68,54 @@ class plgCrowdfundingPaymentLogin extends JPlugin
         }
 
         // Get user ID.
-        $userId  = JFactory::getUser()->get('id');
+        $userId = JFactory::getUser()->get('id');
 
         // Display login form
-        if (!$userId) {
-            // Get the form.
-            JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
-            JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
+        JForm::addFormPath(JPATH_COMPONENT . '/models/forms');
+        JForm::addFieldPath(JPATH_COMPONENT . '/models/fields');
 
-            $form = JForm::getInstance('com_users.login', 'login', array('load_data' => false), false, false);
+        $form = JForm::getInstance('com_users.login', 'login', array('load_data' => false), false, false);
 
-            $this->loginForm = $form;
+        $this->loginForm = $form;
 
-            $this->returnUrl = CrowdfundingHelperRoute::getBackingRoute($item->slug, $item->catslug);
+        $paymentSessionContext = Crowdfunding\Constants::PAYMENT_SESSION_CONTEXT.$item->id;
+        $paymentSessionLocal   = $this->app->getUserState($paymentSessionContext);
 
-            // Get the path for the layout file
-            $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login');
+        $terms    = (int)$paymentSessionLocal->terms;
+        $rewardId = (int)$paymentSessionLocal->rewardId;
+        $amount   = $paymentSessionLocal->amount;
 
-            // Render the login form.
-            ob_start();
-            include $path;
-            $html = ob_get_clean();
+        // Generate token that will be accessed by the payment.process.
+        $token           = hash('sha256', $this->app->get('secret'));
+        $this->returnUrl = 'index.php?option=com_crowdfunding&task=backing.process&id=' . $item->id . '&rid=' . $rewardId . '&amount=' . rawurlencode($amount) .'&terms='.$terms.'&token=' . $token;
 
-        } else { // Redirect to step "Payment".
-
-            $componentParams = JComponentHelper::getParams('com_crowdfunding');
-            /** @var  $componentParams Joomla\Registry\Registry */
-
-            // Get the payment process object and
-            // store the selected data from the user.
-            $paymentProcessContext    = Crowdfunding\Constants::PAYMENT_SESSION_CONTEXT . $item->id;
-            $paymentSession           = $this->app->getUserState($paymentProcessContext);
-
-            $this->rewardId = $paymentSession->rewardId;
-            $this->amount   = $paymentSession->amount;
-            $this->terms    = $paymentSession->terms;
-
-            // Get the path for the layout file
-            $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login', 'redirect');
-
-            // Render the login form.
-            ob_start();
-            include $path;
-            $html = ob_get_clean();
-
-            // Include JavaScript code to redirect user to next step.
-
-            $processUrl    = JUri::base().'index.php?option=com_crowdfunding&task=backing.process&id='.(int)$item->id.'&rid='.(int)$this->rewardId.'&amount='.rawurldecode($this->amount).'&'.JSession::getFormToken(). '=1';
-
-            // Set the value of terms of use condition.
-            if ($componentParams->get('backing_terms', 0) and !empty($this->terms)) {
-                $processUrl .= '&terms=1';
-            }
-
-            $filter = JFilterInput::getInstance();
-            $processUrl = $filter->clean($processUrl);
-
-            $js = '
-jQuery(document).ready(function() {
-     window.location.replace("'.$processUrl.'");
-});';
-            $doc->addScriptDeclaration($js);
+        // Point to next step, if it is available for registered users.
+        // Otherwise, point to first step.
+        if ($nextStepParams->show_to_registered) {
+            $this->returnUrl .= '&layout=' . $nextStepParams->layout;
         }
+
+        // Get the path for the layout file
+        $path = JPluginHelper::getLayoutPath('crowdfundingpayment', 'login');
+
+        // Render the login form.
+        ob_start();
+        include $path;
+        $html = ob_get_clean();
 
         return $html;
     }
 
     /**
-     * This method is used from the system to authorize step 2,
-     * when you use a payment wizard in four steps.
-     * If this method return true, the system will continue to step 2.
+     * Return information about a step on the payment wizard.
      *
-     * @param string    $context This string gives information about that where it has been executed the trigger.
-     * @param stdClass $item
-     * @param Joomla\Registry\Registry $params
-     * @param JUser $user
+     * @param string $context
      *
-     * @return bool
+     * @return null|array
      */
-    public function onPaymentAuthorize($context, $item, $params, $user)
+    public function onPrepareWizardSteps($context)
     {
-        if (strcmp('com_crowdfunding.payment.authorize', $context) !== 0) {
+        if (strcmp('com_crowdfunding.payment.wizard', $context) !== 0) {
             return null;
         }
 
@@ -159,6 +132,15 @@ jQuery(document).ready(function() {
             return null;
         }
 
-        return true;
+        $userId = (int)JFactory::getUser()->get('id');
+        if ($userId > 0) {
+            return null;
+        }
+
+        return array(
+            'title'   => JText::_('PLG_CROWDFUNDINGPAYMENT_LOGIN_STEP_TITLE'),
+            'context' => 'login',
+            'allowed' => Prism\Constants::YES
+        );
     }
 }

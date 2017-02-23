@@ -2,14 +2,14 @@
 <extension version="3.6" type="plugin" group="crowdfundingpayment" method="upgrade">
     <name>PLG_CROWDFUNDINGPAYMENT_LOGIN</name>
     <author>Todor Iliev</author>
-    <copyright>Copyright (C) 2016 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
+    <copyright>Copyright (C) 2017 Todor Iliev ( ITPrism.com ). All rights reserved.</copyright>
     <license>http://www.gnu.org/licenses/gpl-3.0.en.html GNU/GPLv3</license>
     <authorEmail>todor@itprism.com</authorEmail>
     <authorUrl>http://itprism.com</authorUrl>
-    <version>2.2</version>
-    <creationDate>18 September, 2016</creationDate>
+    <version>2.3</version>
+    <creationDate>23 February, 2017</creationDate>
     <description><![CDATA[
-	<p>CrowdfundingPayment - Login is a plugin that displays a login form on step 2 of the payment wizard.</p>
+	<p>CrowdfundingPayment - Login is a plugin that displays login form as a step on the payment wizard.</p>
 	<p><a href='http://itprism.com/' target='_blank'>Subscribe for the newsletter</a> to receive information about updates and new ITPrism extensions.</p>
 	<p>Please, <a href='http://extensions.joomla.org/extensions/extension/e-commerce/donations/crowdfunding' target='_blank'>vote for the extension</a> on Joomla! Extensions Directory</p>
 	]]></description>
@@ -26,6 +26,6 @@
     <config />
 
     <updateservers>
-        <server type="extension" priority="1" name="CrowdfundingPayment - Login ( from CDN )">http://cdn.itprism.com/updates/crowdfunding/plugins/plg_crowdfundingpayment_login.xml</server>
+        <server type="extension" priority="1" name="CrowdfundingPayment - Login">http://cdn.itprism.com/updates/crowdfunding/plugins/plg_crowdfundingpayment_login.xml</server>
     </updateservers>
 </extension>
